@@ -1,16 +1,36 @@
-class AuthToken
-{
+<#
+Disclaimer
 
-    #Properties
+This sample script is not supported under any Microsoft standard support program or service. 
+The sample script is provided AS IS without warranty of any kind. Microsoft further disclaims 
+all implied warranties including, without limitation, any implied warranties of merchantability 
+or of fitness for a particular purpose. The entire risk arising out of the use or performance 
+of the sample scripts and documentation remains with you. In no event shall Microsoft, its authors, 
+or anyone else involved in the creation, production, or delivery of the scripts be liable for 
+any damages whatsoever (including, without limitation, damages for loss of business profits, 
+business interruption, loss of business information, or other pecuniary loss) arising out of the 
+use of or inability to use the sample scripts or documentation, even if Microsoft has been advised 
+of the possibility of such damages
+
+Author: Microsoft  (Chris Niebuhr)
+Mail:   Chris.Niebuhr@Microsoft.com
+Date:   09.09.2020
+#> 
+
+#Helper-Class to deal with Azure Authentication Tokens
+class AuthTokenHelper
+{
+    #region Properties
     hidden [string]
     $_token
     hidden [System.Collections.Generic.List[PSObject]]
     $_result
     [PSObject]
     $Result
+    #endregion
 
-    # Constructor
-    AuthToken([string]$tokenString)
+    #region Constructor
+    AuthTokenHelper([string]$tokenString)
     {
         if($this.IsTokenValid($tokenString))
         {
@@ -23,7 +43,9 @@ class AuthToken
             $this.Result = 'Invalid token'
         }
     }
-    # Methods
+    #endregion
+
+    #region Methods
     #Check if the provided Token is valid 
     hidden [bool]IsTokenValid([string]$tokenString)
     {
@@ -71,9 +93,10 @@ class AuthToken
             $this.Result = $this._result[0]
         }   
     }
+    #endregion
 }
 
-#ERASE ALL THIS AND PUT XAML BELOW between the @" "@ 
+#region PowerShell GUI
 $inputXML = @"
 <Window x:Class="PSTokenViewer.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
@@ -127,22 +150,21 @@ catch
 {
     Write-Host "Unable to load Windows.Markup.XamlReader. Double-check syntax and ensure .net is installed."
 }
-
-
 $xaml.SelectNodes("//*[@Name]") | ForEach-Object{Set-Variable -Name ('WPF{0}' -f ($_.Name)) -Value $Form.FindName($_.Name)}
- 
 #region Eventhandler
 $OnTextChanged=
 {
     if($WPFTxtTokenInput.Text.Length -gt 0)
     {
-        $token = [Authtoken]::new($WPFTxtTokenInput.Text)
+        $token = [AuthtokenHelper]::new($WPFTxtTokenInput.Text)
         if($token.Result -ne 'Invalid token')
         {
+            #Iterate through every Property of Token.Result 
+            #This is for formatting purposes
             $props=$token.Result.psobject.Properties
-
             foreach($prop in $props)
             {
+                #A Run is used to do inline formatting inside a Textblock
                 $run = New-Object -TypeName System.Windows.Documents.Run
                 $run.FontWeight = [System.Windows.FontWeights]::Bold
                 $run.Text = '{0}: ' -f $prop.Name
@@ -151,7 +173,6 @@ $OnTextChanged=
                 if($prop.Value -is [Array])
                 {
                     $tmpValues = $prop.Value -join ","
-
                 }
                 else 
                 {
@@ -177,4 +198,5 @@ $OnTextChanged=
 
 $WPFTxtTokenInput.Add_TextChanged($OnTextChanged)
 $Form.ShowDialog() | Out-Null
+#endregion
 
