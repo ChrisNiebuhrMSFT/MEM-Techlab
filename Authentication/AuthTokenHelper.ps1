@@ -109,6 +109,7 @@ $inputXML = @"
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
@@ -116,13 +117,13 @@ $inputXML = @"
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <TextBlock Margin="5" Grid.Column="0" Grid.Row="0" Text="Copy token here" FontWeight="Bold"/>
-        <TextBox  x:Name="TxtTokenInput" Margin="5" Grid.Column="0" Grid.Row="1" VerticalScrollBarVisibility="Auto" TextWrapping="Wrap" />
-        <TextBlock Margin="5" Grid.Column="1" Grid.Row="0" Text="Token Result" FontWeight="Bold"/>
-        <Border BorderBrush="LightGray" BorderThickness="1" Grid.Column="1" Grid.Row="1" Margin="5">
-        <ScrollViewer VerticalScrollBarVisibility="Auto">
-        <TextBlock x:Name="TxtResult" Grid.Column="1" Grid.Row="1" Margin="5" TextWrapping="Wrap"/>
+        <ScrollViewer Grid.Row="1" Grid.Column="0" VerticalScrollBarVisibility="Auto">
+            <TextBox  x:Name="TxtTokenInput" Margin="5" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" TextWrapping="Wrap"/>
         </ScrollViewer>
-        </Border>
+        <TextBlock Margin="5" Grid.Column="2" Grid.Row="0" Text="Token Result" FontWeight="Bold"/>
+        <Border Grid.Column="2" Grid.Row="1" BorderBrush="LightGray" BorderThickness="1" Margin="5" />
+        <TextBlock  x:Name="TxtResult" Grid.Column="2" Grid.Row="1" Margin="5" TextWrapping="Wrap"/>
+        <GridSplitter Grid.Column="1" Grid.Row="1" Width="8" Height="15" VerticalAlignment="Stretch" HorizontalAlignment="Center"/>
     </Grid>
 </Window>
 "@ 
