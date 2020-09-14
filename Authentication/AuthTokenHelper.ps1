@@ -201,3 +201,5 @@ $WPFTxtTokenInput.Add_TextChanged($OnTextChanged)
 $Form.ShowDialog() | Out-Null
 #endregion
 
+$data =  'JhQqGjTRT-X8IgTmNDfVgp5CaZQQZnb2wGD7cz9wrSHSfFF6rEN_Jqm3_9NKH5AZK3ypKxB88SqkMqeT6XF4MfhQ7ERjDgRLwwYGS9y8UhrEL6Dh5lYnRb9t1T4PLQToXhQV1XtRKqAUsKerPjBGgcw3T6ilJ4fl_4pbztijlG0n7A5AUeScQw9sxund3UPEV1EpUjN990Ae6YInffrjzc34XDBhXs9pgl7Y5zwsIq-Q8NWGA3nTFgRHpNCta3cNhHFpq0tQlXSMRUYO-dQUHkqpkIYm87X1jP0P2tZu3A0oRD_PT41IMYQOQiMupy8g7Eoyq58r5MC6yM__oOdIkA==' -replace '-', '+' -replace '_', '/'
+[System.Text.Encoding]::Default.GetString([System.Convert]::FromBase64String($data))
